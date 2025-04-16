@@ -54,12 +54,20 @@ public class Reto2 {
             System.out.println(seleccionado.toString());
             System.out.println();
 
+            System.out.println("Visualizar el anime seleccionado? (S/N): ");
+            opcion = sc.nextLine();
+
+            if (opcion.equalsIgnoreCase("s")) {
+                System.out.println("Abriendo en web... ⊂(◉‿◉)⊂");
+                mostrarEnWeb(seleccionado);
+            }
+
         } while (true);
     }
 
     private static List<Anime.Data> buscarAnime(String nombre) throws IOException {
         String endpoint = "https://api.jikan.moe/v4/anime?q=" +
-                URLEncoder.encode(nombre, StandardCharsets.UTF_8) + "&limit=5";
+                URLEncoder.encode(nombre, StandardCharsets.UTF_8) + "&limit=10";
 
 
         URL url = new URL(endpoint);
@@ -87,6 +95,41 @@ public class Reto2 {
         }
         return lista;
 
+    }
+
+    private static void mostrarEnWeb(Anime.Data anime) throws IOException {
+        String html = "<!DOCTYPE html>\n" +
+                "<html lang='es'>\n" +
+                "<head>\n" +
+                "    <meta charset='UTF-8'>\n" +
+                "    <title>" + anime.title + "</title>\n" +
+                "    <style>\n" +
+                "        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }\n" +
+                "        .card { background: white; padding: 20px; max-width: 800px; margin: auto; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }\n" +
+                "        img { max-width: 100%; height: auto; border-radius: 10px; }\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "<div class='card'>\n" +
+                "    <h1>" + anime.title + "</h1>\n" +
+                (anime.title_english != null ? "<h2>" + anime.title_english + "</h2>\n" : "") +
+                "    <img src='" + anime.images.jpg.large_image_url + "' alt='Imagen del anime'>\n" +
+                "    <p><strong>Sinopsis:</strong> " + anime.synopsis + "</p>\n" +
+                "    <p><strong>Tipo:</strong> " + anime.type + "</p>\n" +
+                "    <p><strong>Fuente:</strong> " + anime.source + "</p>\n" +
+                "    <p><strong>Episodios:</strong> " + anime.episodes + "</p>\n" +
+                "    <p><strong>Estado:</strong> " + anime.status + "</p>\n" +
+                "    <p><strong>Puntuación:</strong> " + anime.score + " / 10</p>\n" +
+                "</div>\n" +
+                "</body>\n" +
+                "</html>";
+
+        // Escribir el HTML a un archivo
+        String fileName = "anime_" + anime.mal_id + ".html";
+        java.nio.file.Files.write(java.nio.file.Paths.get(fileName), html.getBytes());
+
+        // Abrir el archivo en el navegador
+        java.awt.Desktop.getDesktop().browse(new java.io.File(fileName).toURI());
     }
 }
 
