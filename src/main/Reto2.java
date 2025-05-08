@@ -125,7 +125,7 @@ public class Reto2 {
                 "</html>";
 
         // Escribir el HTML a un archivo
-        String fileName = "anime_" + anime.mal_id + ".html";
+        String fileName = "src/archivo/anime_" + anime.mal_id + ".html";
         java.nio.file.Files.write(java.nio.file.Paths.get(fileName), html.getBytes());
 
         // Abrir el archivo en el navegador

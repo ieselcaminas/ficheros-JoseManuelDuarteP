@@ -10,8 +10,8 @@ import org.json.JSONObject;
 
 public class Gemini {
 
-    // CAMBIA AQUÍ: pega tu clave OpenRouter
-    private static final String API_KEY = "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";
+    // Pega aquí tu clave tipo "sk-or-v1-..."
+    private static final String API_KEY = "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";
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -36,14 +36,14 @@ public class Gemini {
                 .put("content", prompt);
 
         JSONObject json = new JSONObject()
-                .put("model", "openai/gpt-3.5-turbo") // Puedes cambiar el modelo, por ejemplo: "mistralai/mistral-7b-instruct"
+                .put("model", "openai/gpt-3.5-turbo") // Cambia por otro si lo deseas, como "mistralai/mistral-7b-instruct"
                 .put("messages", new JSONArray().put(message));
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://openrouter.ai/api/v1/chat/completions"))
                 .header("Authorization", "Bearer " + API_KEY)
                 .header("Content-Type", "application/json")
-                .header("HTTP-Referer", "https://tu-app.com") // cambia por tu app o "https://localhost"
+                .header("HTTP-Referer", "https://localhost")
                 .header("X-Title", "MiAppJava")
                 .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
                 .build();
@@ -52,7 +52,6 @@ public class Gemini {
 
         JSONObject jsonResponse = new JSONObject(response.body());
 
-        // Verifica errores
         if (!jsonResponse.has("choices")) {
             throw new RuntimeException("Respuesta inesperada:\n" + jsonResponse.toString(2));
         }
