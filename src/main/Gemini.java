@@ -11,7 +11,7 @@ import org.json.JSONObject;
 public class Gemini {
 
     // Pega aquí tu clave tipo "sk-or-v1-..."
-    private static final String API_KEY = "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";
+    private static final String API_KEY = "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";
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
